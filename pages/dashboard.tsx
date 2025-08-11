@@ -1109,8 +1109,8 @@ const Expense = () => {
 
                                                     <ReactApexChart
                                                         key={state.isMounted ? 'mounted' : 'unmounted'}
-                                                        series={salesByCategory.series}
-                                                        options={salesByCategory.options}
+                                                        series={salesByCategory?.series || []}
+                                                        options={salesByCategory?.options || []}
                                                         type="donut"
                                                         height={460}
                                                         width={'100%'}
