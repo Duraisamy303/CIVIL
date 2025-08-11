@@ -14,7 +14,6 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 });
 import { ApexOptions } from 'apexcharts';
 
-
 const Expense = () => {
     const router = useRouter();
     const [state, setState] = useSetState({
@@ -29,6 +28,7 @@ const Expense = () => {
         revenueChart: {},
         monthPaymentChart: {},
         monthBarChart: {},
+        expenseChart: {},
     });
 
     const [invoiceMonthData, setInvoiceMonthData] = useState([]);
@@ -489,6 +489,93 @@ const Expense = () => {
                 },
             };
 
+            const expenseSeries = [
+                {
+                    name: 'Amount',
+                    data: res.expenses_data,
+                },
+            ];
+
+            const expenseOptions = {
+                chart: {
+                    height: 360,
+                    type: 'bar',
+                    fontFamily: 'Nunito, sans-serif',
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    width: 2,
+                    colors: ['transparent'],
+                },
+                colors: ['#5c1ac3', '#ffbb44'],
+                dropShadow: {
+                    enabled: true,
+                    blur: 3,
+                    color: '#515365',
+                    opacity: 0.4,
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        borderRadius: 8,
+                        borderRadiusApplication: 'end',
+                    },
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '14px',
+                    itemMargin: {
+                        horizontal: 8,
+                        vertical: 8,
+                    },
+                },
+                grid: {
+                    borderColor: isDark ? '#191e3a' : '#e0e6ed',
+                    padding: {
+                        left: 20,
+                        right: 20,
+                    },
+                },
+                xaxis: {
+                    categories: res.expenses_name,
+                    axisBorder: {
+                        show: true,
+                        color: isDark ? '#3b3f5c' : '#e0e6ed',
+                    },
+                },
+                yaxis: {
+                    tickAmount: 6,
+                    opposite: isRtl ? true : false,
+                    labels: {
+                        offsetX: isRtl ? -10 : 0,
+                    },
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: isDark ? 'dark' : 'light',
+                        type: 'vertical',
+                        shadeIntensity: 0.3,
+                        inverseColors: false,
+                        opacityFrom: 1,
+                        opacityTo: 0.8,
+                        stops: [0, 100],
+                    },
+                },
+                tooltip: {
+                    marker: {
+                        show: true,
+                    },
+                },
+            };
+
             const pendingPayment = {
                 total: roundNumber(res?.pending_payment),
                 monthData: roundNumber(res?.pending_payment_this_month),
@@ -504,6 +591,11 @@ const Expense = () => {
                 options: revenueOptions[0],
             };
 
+            const expenseChart = {
+                series: expenseSeries,
+                options: expenseOptions,
+            };
+
             setState({
                 cardData,
                 pendingPayment,
@@ -517,6 +609,7 @@ const Expense = () => {
                 },
                 monthPaymentChart,
                 monthBarChart,
+                expenseChart,
             });
         } catch (error) {
             console.log('✌️error --->', error);
@@ -945,8 +1038,8 @@ const Expense = () => {
                                     <div className="xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && expenseChart.series?.length > 0 ? (
-                                                    <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
+                                                {state.isMounted && state.expenseChart?.series?.length > 0 ? (
+                                                    <ReactApexChart series={state.expenseChart?.series || []} options={state.expenseChart?.options || []} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
@@ -963,15 +1056,15 @@ const Expense = () => {
                                             <h5 className="text-lg font-semibold dark:text-white-light">{state.currentMonth} Expense</h5>
                                         </div>
                                         <div>
-                                            {/* <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && categoryChart.series?.length>0 ? (
+                                            <div className="rounded-lg bg-white dark:bg-black">
+                                                {state.isMounted && categoryChart.series?.length > 0 ? (
                                                     <ReactApexChart options={categoryChart.options} series={categoryChart.series} type="bar" height={360} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
                                                 )}
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
