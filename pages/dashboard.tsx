@@ -14,37 +14,8 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 });
 import { ApexOptions } from 'apexcharts';
 
-interface SalesByCategoryChart {
-    series: number[];
-    options: ApexOptions;
-}
 
 const Expense = () => {
-    const donutSeries: number[] = [44, 55, 13, 43, 22];
-
-    const donutOptions: ApexOptions = {
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Electronics', 'Clothing', 'Grocery', 'Home Decor', 'Books'],
-        legend: {
-            position: 'bottom',
-        },
-        responsive: [
-            {
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        width: 300,
-                    },
-                    legend: {
-                        position: 'bottom',
-                    },
-                },
-            },
-        ],
-    };
-
     const router = useRouter();
     const [state, setState] = useSetState({
         data: null,
@@ -56,7 +27,8 @@ const Expense = () => {
         admin: 'false',
         isMounted: false,
         revenueChart: {},
-        monthPaymentChart:{}
+        monthPaymentChart: {},
+        monthBarChart: {},
     });
 
     const [invoiceMonthData, setInvoiceMonthData] = useState([]);
@@ -88,21 +60,6 @@ const Expense = () => {
     useEffect(() => {
         updateChart();
     }, [payments_sum, expenseMonthWise, invoiceMonthData]);
-
-    const [initialSeriesData] = [
-        {
-            name: 'Total',
-            data: total,
-        },
-        {
-            name: 'Paid Amount',
-            data: paid,
-        },
-        {
-            name: 'Unpaid Amount',
-            data: unpaid,
-        },
-    ];
 
     const [initialOptions] = [
         {
@@ -245,169 +202,6 @@ const Expense = () => {
                     opacityFrom: isDark ? 0.19 : 0.28,
                     opacityTo: 0.05,
                     stops: isDark ? [100, 100] : [45, 100],
-                },
-            },
-        },
-    ];
-
-    const [revenueChart, setRevenueChart] = useState({
-        series: initialSeriesData,
-        options: initialOptions,
-    });
-
-    const [salesinitdata] = [
-        {
-            chart: {
-                type: 'donut',
-                height: 460,
-                fontFamily: 'Nunito, sans-serif',
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                show: true,
-                width: 25,
-                colors: isDark ? '#0e1726' : '#fff',
-            },
-            colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f', '#5c1ac3', '#e7515a'],
-            legend: {
-                position: 'bottom',
-                horizontalAlign: 'center',
-                fontSize: '14px',
-                markers: {
-                    width: 10,
-                    height: 10,
-                    offsetX: -2,
-                },
-                height: 50,
-                offsetY: 20,
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%',
-                        background: 'transparent',
-                        labels: {
-                            show: true,
-                            name: {
-                                show: true,
-                                fontSize: '29px',
-                                offsetY: -10,
-                            },
-                            value: {
-                                show: true,
-                                fontSize: '26px',
-                                color: isDark ? '#bfc9d4' : undefined,
-                                offsetY: 16,
-                                formatter: (val: any) => {
-                                    return val;
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            labels: ['Total Amount', 'Paid Amount', 'Unpaid Amount'],
-            states: {
-                hover: {
-                    filter: {
-                        type: 'none',
-                        value: 0.15,
-                    },
-                },
-                active: {
-                    filter: {
-                        type: 'none',
-                        value: 0.15,
-                    },
-                },
-            },
-        },
-    ];
-
-    const [salesByCategory, setSalesByCategory] = useState<SalesByCategoryChart>({
-        series: [],
-        options: donutOptions,
-    });
-
-    const [categoryinitdata] = [
-        {
-            chart: {
-                height: 360,
-                type: 'bar',
-                fontFamily: 'Nunito, sans-serif',
-                toolbar: {
-                    show: false,
-                },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                width: 2,
-                colors: ['transparent'],
-            },
-            colors: ['#5c1ac3', '#ffbb44'],
-            dropShadow: {
-                enabled: true,
-                blur: 3,
-                color: '#515365',
-                opacity: 0.4,
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    borderRadius: 8,
-                    borderRadiusApplication: 'end',
-                },
-            },
-            legend: {
-                position: 'bottom',
-                horizontalAlign: 'center',
-                fontSize: '14px',
-                itemMargin: {
-                    horizontal: 8,
-                    vertical: 8,
-                },
-            },
-            grid: {
-                borderColor: isDark ? '#191e3a' : '#e0e6ed',
-                padding: {
-                    left: 20,
-                    right: 20,
-                },
-            },
-            xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                axisBorder: {
-                    show: true,
-                    color: isDark ? '#3b3f5c' : '#e0e6ed',
-                },
-            },
-            yaxis: {
-                tickAmount: 6,
-                opposite: isRtl ? true : false,
-                labels: {
-                    offsetX: isRtl ? -10 : 0,
-                },
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: isDark ? 'dark' : 'light',
-                    type: 'vertical',
-                    shadeIntensity: 0.3,
-                    inverseColors: false,
-                    opacityFrom: 1,
-                    opacityTo: 0.8,
-                    stops: [0, 100],
-                },
-            },
-            tooltip: {
-                marker: {
-                    show: true,
                 },
             },
         },
@@ -705,6 +499,11 @@ const Expense = () => {
                 options: paymentCharts,
             };
 
+            const monthBarChart = {
+                series: revenueSeries,
+                options: revenueOptions[0],
+            };
+
             setState({
                 cardData,
                 pendingPayment,
@@ -716,7 +515,8 @@ const Expense = () => {
                     series: revenueSeries,
                     options: revenueOptions,
                 },
-                monthPaymentChart
+                monthPaymentChart,
+                monthBarChart,
             });
         } catch (error) {
             console.log('✌️error --->', error);
@@ -730,7 +530,6 @@ const Expense = () => {
                 },
             })
             .then((res) => {
-             
                 setMonthName(res.data.months_name);
                 setTotal(res.data.total_amount);
                 setPaid(res.data.paid_amount);
@@ -738,92 +537,6 @@ const Expense = () => {
                 setInvoiceMonthData(res.data.payments);
                 setexpenseMonthWise(res.data.expense_amount_list);
                 setpayments_sum(res.data.payments_sum);
-                setSalesByCategory({
-                    series: res.data.payments,
-                    options: donutOptions,
-                });
-                console.log('✌️res.data.payments --->', res.data.payments);
-
-                // setsalesByCategory((prevData) => ({
-                //     series: res.data.payments,
-                //     options: {
-                //         chart: {
-                //             type: 'donut',
-                //             height: 460,
-                //             fontFamily: 'Nunito, sans-serif',
-                //         },
-                //         dataLabels: {
-                //             enabled: false,
-                //         },
-                //         stroke: {
-                //             show: true,
-                //             width: 25,
-                //             colors: isDark ? '#0e1726' : '#fff',
-                //         },
-                //         colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f', '#5c1ac3', '#e7515a'],
-                //         legend: {
-                //             position: 'bottom',
-                //             horizontalAlign: 'center',
-                //             fontSize: '14px',
-                //             markers: {
-                //                 width: 10,
-                //                 height: 10,
-                //                 offsetX: -2,
-                //             },
-                //             height: 50,
-                //             offsetY: 20,
-                //         },
-                //         plotOptions: {
-                //             pie: {
-                //                 donut: {
-                //                     size: '65%',
-                //                     background: 'transparent',
-                //                     labels: {
-                //                         show: true,
-                //                         name: {
-                //                             show: true,
-                //                             fontSize: '29px',
-                //                             offsetY: -10,
-                //                         },
-                //                         value: {
-                //                             show: true,
-                //                             fontSize: '26px',
-                //                             color: isDark ? '#bfc9d4' : undefined,
-                //                             offsetY: 16,
-                //                             formatter: (val: any) => {
-                //                                 return val;
-                //                             },
-                //                         },
-                //                         total: {
-                //                             show: true,
-                //                             label: 'Total Amount',
-                //                             color: '#888ea8',
-                //                             fontSize: '29px',
-                //                             formatter: (w: any) => {
-                //                                 return res.data.payments_sum;
-                //                             },
-                //                         },
-                //                     },
-                //                 },
-                //             },
-                //         },
-                //         labels: ['Total Amount', 'Paid Amount', 'Unpaid Amount'],
-                //         states: {
-                //             hover: {
-                //                 filter: {
-                //                     type: 'none',
-                //                     value: 0.15,
-                //                 },
-                //             },
-                //             active: {
-                //                 filter: {
-                //                     type: 'none',
-                //                     value: 0.15,
-                //                 },
-                //             },
-                //         },
-                //     },
-                // }));
 
                 setcategoryChart(() => ({
                     series: [
@@ -924,23 +637,23 @@ const Expense = () => {
     };
 
     const updateChart = () => {
-        setRevenueChart((prevData: any) => ({
-            ...prevData,
-            series: [
-                {
-                    name: 'Total',
-                    data: total,
-                },
-                {
-                    name: 'Paid Amount',
-                    data: paid,
-                },
-                {
-                    name: 'Unpaid Amount',
-                    data: unpaid,
-                },
-            ],
-        }));
+        // setRevenueChart((prevData: any) => ({
+        //     ...prevData,
+        //     series: [
+        //         {
+        //             name: 'Total',
+        //             data: total,
+        //         },
+        //         {
+        //             name: 'Paid Amount',
+        //             data: paid,
+        //         },
+        //         {
+        //             name: 'Unpaid Amount',
+        //             data: unpaid,
+        //         },
+        //     ],
+        // }));
 
         setExpenseChart({
             series: [
@@ -1109,68 +822,6 @@ const Expense = () => {
                                         </div>
                                     </Link>
                                 ))}
-                                {/* <Link href="/invoice/invoice">
-                                    <div className="panel bg-gradient-to-r from-violet-500 to-violet-400">
-                                        <div className="flex justify-between">
-                                            <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Invoices</div>
-                                            <div className="dropdown"></div>
-                                        </div>
-                                        <div className="mt-5 flex items-center">
-                                            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">Total : {invoiceTotal} </div>
-                                        </div>
-                                        <div className="mt-5 flex items-center font-semibold">
-                                            <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            {thisMonthName} Month Created : {invoiceThisMonthTotal}
-                                        </div>
-                                    </div>
-                                </Link>
-
-                                <Link href="/invoice/invoice">
-                                    <div className="panel bg-gradient-to-r from-red-500 to-red-400">
-                                        <div className="flex justify-between">
-                                            <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Incomplete Invoices</div>
-                                            <div className="dropdown"></div>
-                                        </div>
-                                        <div className="mt-5 flex items-center">
-                                            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">Total : {incompleteinvoiceTotal} </div>
-                                        </div>
-                                        <div className="mt-5 flex items-center font-semibold">
-                                            <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            {thisMonthName} Month Created : {incompleteinvoiceThisMonthTotal}
-                                        </div>
-                                    </div>
-                                </Link>
-
-                                <Link href="/report/testReport">
-                                    <div className="panel bg-gradient-to-r from-rose-500 to-rose-400">
-                                        <div className="flex justify-between">
-                                            <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Incomplete Tests</div>
-                                            <div className="dropdown"></div>
-                                        </div>
-                                        <div className="mt-5 flex items-center">
-                                            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">Total : {incompletetestTotal} </div>
-                                        </div>
-                                        <div className="mt-5 flex items-center font-semibold">
-                                            <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            {thisMonthName} Month Created : {incompletetestThisMonthTotal}
-                                        </div>
-                                    </div>
-                                </Link>
-
-                                <Link href="/report/expenseReport">
-                                    <div className="panel bg-gradient-to-r from-blue-500 to-blue-400">
-                                        <div className="flex justify-between">
-                                            <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Expense</div>
-                                        </div>
-                                        <div className="mt-5 flex items-center">
-                                            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> Total : {expenseTotal} </div>
-                                        </div>
-                                        <div className="mt-5 flex items-center font-semibold">
-                                            <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            {thisMonthName} Month added : {expenseThisMonthTotal}
-                                        </div>
-                                    </div>
-                                </Link> */}
                             </>
                         ) : (
                             <></>
@@ -1202,15 +853,15 @@ const Expense = () => {
                                     </div>
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
-                                            {/* <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted ? (
-                                                    <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
+                                            <div className="rounded-lg bg-white dark:bg-black">
+                                                {state.isMounted && state.monthBarChart.series?.length > 0 ? (
+                                                    <ReactApexChart series={state.monthBarChart?.series || []} options={state.monthBarChart?.options || []} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
                                                 )}
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
