@@ -1083,7 +1083,7 @@ const Expense = () => {
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && revenueChart.series ? (
+                                                {state.isMounted && revenueChart.series && revenueChart.options ? (
                                                     <ReactApexChart
                                                         series={Array.isArray(revenueChart.series) ? revenueChart.series : [revenueChart.series]}
                                                         options={Array.isArray(revenueChart.options) ? revenueChart.options : [revenueChart.options]}
