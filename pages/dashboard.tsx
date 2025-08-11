@@ -10,6 +10,12 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import { baseUrl, roundNumber, useSetState } from '@/utils/function.util';
 import Models from '@/imports/models.import';
+import { ApexOptions } from 'apexcharts';
+
+type ChartSeries = {
+    name: string;
+    data: number[];
+}[];
 
 const Expense = () => {
     const router = useRouter();
@@ -55,7 +61,7 @@ const Expense = () => {
         updateChart();
     }, [payments_sum, expenseMonthWise, invoiceMonthData]);
 
-    const [initialSeriesData] = [
+    const initialSeriesData: ChartSeries = [
         {
             name: 'Total',
             data: total,
@@ -70,153 +76,153 @@ const Expense = () => {
         },
     ];
 
-    const [initialOptions] = [
-        {
-            chart: {
-                height: 325,
-                type: 'area',
-                fontFamily: 'Nunito, sans-serif',
-                zoom: {
-                    enabled: false,
-                },
-                toolbar: {
-                    show: false,
-                },
-            },
-
-            dataLabels: {
+    const initialOptions: any = {
+        chart: {
+            height: 325,
+            type: 'area',
+            fontFamily: 'Nunito, sans-serif',
+            zoom: {
                 enabled: false,
             },
-            stroke: {
+            toolbar: {
+                show: false,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            show: true,
+            curve: 'smooth',
+            width: 2,
+            lineCap: 'square',
+        },
+        dropShadow: {
+            enabled: true,
+            opacity: 0.2,
+            blur: 10,
+            left: -7,
+            top: 22,
+        },
+        colors: isDark ? ['#2196F3', '#E7515A', '#e670f8'] : ['#1B55E2', '#E7515A', '#e670f8'],
+        markers: {
+            discrete: [
+                {
+                    seriesIndex: 0,
+                    dataPointIndex: 6,
+                    fillColor: '#1B55E2',
+                    strokeColor: 'transparent',
+                    size: 7,
+                },
+                {
+                    seriesIndex: 1,
+                    dataPointIndex: 5,
+                    fillColor: '#E7515A',
+                    strokeColor: 'transparent',
+                    size: 7,
+                },
+                {
+                    seriesIndex: 2,
+                    dataPointIndex: 5,
+                    fillColor: '#e670f8',
+                    strokeColor: 'transparent',
+                    size: 7,
+                },
+            ],
+        },
+        labels: monthName,
+        xaxis: {
+            axisBorder: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+            crosshairs: {
                 show: true,
-                curve: 'smooth',
-                width: 2,
-                lineCap: 'square',
             },
-            dropShadow: {
-                enabled: true,
-                opacity: 0.2,
-                blur: 10,
-                left: -7,
-                top: 22,
-            },
-            colors: isDark ? ['#2196F3', '#E7515A', '#e670f8'] : ['#1B55E2', '#E7515A', '#e670f8'],
-            markers: {
-                discrete: [
-                    {
-                        seriesIndex: 0,
-                        dataPointIndex: 6,
-                        fillColor: '#1B55E2',
-                        strokeColor: 'transparent',
-                        size: 7,
-                    },
-                    {
-                        seriesIndex: 1,
-                        dataPointIndex: 5,
-                        fillColor: '#E7515A',
-                        strokeColor: 'transparent',
-                        size: 7,
-                    },
-                    {
-                        seriesIndex: 2,
-                        dataPointIndex: 5,
-                        fillColor: '#e670f8',
-                        strokeColor: 'transparent',
-                        size: 7,
-                    },
-                ],
-            },
-            labels: monthName,
-            xaxis: {
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    show: false,
-                },
-                crosshairs: {
-                    show: true,
-                },
-                labels: {
-                    offsetX: isRtl ? 2 : 0,
-                    offsetY: 5,
-                    style: {
-                        fontSize: '12px',
-                        cssClass: 'apexcharts-xaxis-title',
-                    },
-                },
-            },
-            yaxis: {
-                tickAmount: 7,
-                labels: {
-                    formatter: (value: number) => {
-                        return value;
-                    },
-                    offsetX: isRtl ? -30 : -10,
-                    offsetY: 0,
-                    style: {
-                        fontSize: '12px',
-                        cssClass: 'apexcharts-yaxis-title',
-                    },
-                },
-                opposite: isRtl ? true : false,
-            },
-            grid: {
-                borderColor: isDark ? '#191E3A' : '#E0E6ED',
-                strokeDashArray: 5,
-                xaxis: {
-                    lines: {
-                        show: false,
-                    },
-                },
-                yaxis: {
-                    lines: {
-                        show: true,
-                    },
-                },
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                },
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'right',
-                fontSize: '16px',
-                markers: {
-                    width: 10,
-                    height: 10,
-                    offsetX: -2,
-                },
-                itemMargin: {
-                    horizontal: 10,
-                    vertical: 5,
-                },
-            },
-            tooltip: {
-                marker: {
-                    show: true,
-                },
-                x: {
-                    show: false,
-                },
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: !1,
-                    opacityFrom: isDark ? 0.19 : 0.28,
-                    opacityTo: 0.05,
-                    stops: isDark ? [100, 100] : [45, 100],
+            labels: {
+                offsetX: isRtl ? 2 : 0,
+                offsetY: 5,
+                style: {
+                    fontSize: '12px',
+                    cssClass: 'apexcharts-xaxis-title',
                 },
             },
         },
-    ];
+        yaxis: {
+            tickAmount: 7,
+            labels: {
+                formatter: (value: number) => {
+                    return value;
+                },
+                offsetX: isRtl ? -30 : -10,
+                offsetY: 0,
+                style: {
+                    fontSize: '12px',
+                    cssClass: 'apexcharts-yaxis-title',
+                },
+            },
+            opposite: isRtl ? true : false,
+        },
+        grid: {
+            borderColor: isDark ? '#191E3A' : '#E0E6ED',
+            strokeDashArray: 5,
+            xaxis: {
+                lines: {
+                    show: false,
+                },
+            },
+            yaxis: {
+                lines: {
+                    show: true,
+                },
+            },
+            padding: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+            },
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            fontSize: '16px',
+            markers: {
+                width: 10,
+                height: 10,
+                offsetX: -2,
+            },
+            itemMargin: {
+                horizontal: 10,
+                vertical: 5,
+            },
+        },
+        tooltip: {
+            marker: {
+                show: true,
+            },
+            x: {
+                show: false,
+            },
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: isDark ? 0.19 : 0.28,
+                opacityTo: 0.05,
+                stops: isDark ? [100, 100] : [45, 100],
+            },
+        },
+    };
 
-    const [revenueChart, setRevenueChart] = useState({
+    const [revenueChart, setRevenueChart] = useState<{
+        series: ChartSeries;
+        options: ApexOptions;
+    }>({
         series: initialSeriesData,
         options: initialOptions,
     });
@@ -1083,7 +1089,7 @@ const Expense = () => {
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {/* {state.isMounted && revenueChart.series && revenueChart.options ? (
+                                                {state.isMounted && revenueChart.series && revenueChart.options ? (
                                                     <ReactApexChart
                                                         series={Array.isArray(revenueChart.series) ? revenueChart.series : [revenueChart.series]}
                                                         options={Array.isArray(revenueChart.options) ? revenueChart.options : [revenueChart.options]}
@@ -1095,7 +1101,7 @@ const Expense = () => {
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )} */}
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -1108,7 +1114,7 @@ const Expense = () => {
                                         </div>
                                         <div>
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {/* {state.isMounted && salesByCategory.series?.length > 0 ? (
+                                                {state.isMounted && salesByCategory.series?.length > 0 ? (
                                                     // <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
 
                                                     <ReactApexChart
@@ -1123,7 +1129,7 @@ const Expense = () => {
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )} */}
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -1180,13 +1186,13 @@ const Expense = () => {
                                     <div className="xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {/* {state.isMounted && expenseChart.series ? (
+                                                {state.isMounted && expenseChart.series ? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )} */}
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -1199,13 +1205,13 @@ const Expense = () => {
                                         </div>
                                         <div>
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {/* {state.isMounted ? (
+                                                {state.isMounted ? (
                                                     <ReactApexChart options={categoryChart.options} series={categoryChart.series} type="bar" height={360} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )} */}
+                                                )}
                                             </div>
                                         </div>
                                     </div>
