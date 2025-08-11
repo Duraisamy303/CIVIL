@@ -1083,7 +1083,7 @@ const Expense = () => {
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && revenueChart.series && revenueChart.options ? (
+                                                {/* {state.isMounted && revenueChart.series && revenueChart.options ? (
                                                     <ReactApexChart
                                                         series={Array.isArray(revenueChart.series) ? revenueChart.series : [revenueChart.series]}
                                                         options={Array.isArray(revenueChart.options) ? revenueChart.options : [revenueChart.options]}
@@ -1095,7 +1095,7 @@ const Expense = () => {
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )}
+                                                )} */}
                                             </div>
                                         </div>
                                     </div>
@@ -1108,7 +1108,7 @@ const Expense = () => {
                                         </div>
                                         <div>
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && salesByCategory.series?.length > 0 ? (
+                                                {/* {state.isMounted && salesByCategory.series?.length > 0 ? (
                                                     // <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
 
                                                     <ReactApexChart
@@ -1123,7 +1123,7 @@ const Expense = () => {
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )}
+                                                )} */}
                                             </div>
                                         </div>
                                     </div>
@@ -1180,13 +1180,13 @@ const Expense = () => {
                                     <div className="xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && expenseChart.series ? (
+                                                {/* {state.isMounted && expenseChart.series ? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )}
+                                                )} */}
                                             </div>
                                         </div>
                                     </div>
@@ -1199,13 +1199,13 @@ const Expense = () => {
                                         </div>
                                         <div>
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted ? (
+                                                {/* {state.isMounted ? (
                                                     <ReactApexChart options={categoryChart.options} series={categoryChart.series} type="bar" height={360} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
-                                                )}
+                                                )} */}
                                             </div>
                                         </div>
                                     </div>
