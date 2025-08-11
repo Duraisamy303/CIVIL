@@ -1086,7 +1086,7 @@ const Expense = () => {
                                                 {state.isMounted && revenueChart.series ? (
                                                     <ReactApexChart
                                                         series={Array.isArray(revenueChart.series) ? revenueChart.series : [revenueChart.series]}
-                                                        options={revenueChart.options}
+                                                        options={Array.isArray(revenueChart.options) ? revenueChart.options : [revenueChart.options]}
                                                         type="area"
                                                         height={325}
                                                         width="100%"
