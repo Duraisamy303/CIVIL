@@ -12,8 +12,43 @@ import Models from '@/imports/models.import';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 });
+import { ApexOptions } from "apexcharts";
+type DonutChartSeries = number[];
+
+interface SalesByCategoryChart {
+    series: number[];
+    options: ApexOptions;
+  }
 
 const Expense = () => {
+    const donutSeries: number[] = [44, 55, 13, 43, 22];
+
+    const donutOptions: ApexOptions = {
+        chart: {
+          type: 'donut',
+        },
+        labels: ['Electronics', 'Clothing', 'Grocery', 'Home Decor', 'Books'],
+        legend: {
+          position: 'bottom',
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 300,
+              },
+              legend: {
+                position: 'bottom',
+              },
+            },
+          },
+        ],
+      };
+
+   
+      
+
     const router = useRouter();
     const [state, setState] = useSetState({
         data: null,
@@ -294,10 +329,10 @@ const Expense = () => {
         },
     ];
 
-    const [salesByCategory, setsalesByCategory] = useState({
+    const [salesByCategory, setSalesByCategory] = useState<SalesByCategoryChart>({
         series: [],
-        options: salesinitdata,
-    });
+        options: donutOptions,
+      });
 
     const [categoryinitdata] = [
         {
@@ -625,87 +660,92 @@ const Expense = () => {
                 setInvoiceMonthData(res.data.payments);
                 setexpenseMonthWise(res.data.expense_amount_list);
                 setpayments_sum(res.data.payments_sum);
+                setSalesByCategory({
+                   series: donutSeries,
+                   options: donutOptions,
+                })
 
-                setsalesByCategory((prevData) => ({
-                    series: res.data.payments,
-                    options: {
-                        chart: {
-                            type: 'donut',
-                            height: 460,
-                            fontFamily: 'Nunito, sans-serif',
-                        },
-                        dataLabels: {
-                            enabled: false,
-                        },
-                        stroke: {
-                            show: true,
-                            width: 25,
-                            colors: isDark ? '#0e1726' : '#fff',
-                        },
-                        colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f', '#5c1ac3', '#e7515a'],
-                        legend: {
-                            position: 'bottom',
-                            horizontalAlign: 'center',
-                            fontSize: '14px',
-                            markers: {
-                                width: 10,
-                                height: 10,
-                                offsetX: -2,
-                            },
-                            height: 50,
-                            offsetY: 20,
-                        },
-                        plotOptions: {
-                            pie: {
-                                donut: {
-                                    size: '65%',
-                                    background: 'transparent',
-                                    labels: {
-                                        show: true,
-                                        name: {
-                                            show: true,
-                                            fontSize: '29px',
-                                            offsetY: -10,
-                                        },
-                                        value: {
-                                            show: true,
-                                            fontSize: '26px',
-                                            color: isDark ? '#bfc9d4' : undefined,
-                                            offsetY: 16,
-                                            formatter: (val: any) => {
-                                                return val;
-                                            },
-                                        },
-                                        total: {
-                                            show: true,
-                                            label: 'Total Amount',
-                                            color: '#888ea8',
-                                            fontSize: '29px',
-                                            formatter: (w: any) => {
-                                                return res.data.payments_sum;
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                        labels: ['Total Amount', 'Paid Amount', 'Unpaid Amount'],
-                        states: {
-                            hover: {
-                                filter: {
-                                    type: 'none',
-                                    value: 0.15,
-                                },
-                            },
-                            active: {
-                                filter: {
-                                    type: 'none',
-                                    value: 0.15,
-                                },
-                            },
-                        },
-                    },
-                }));
+                // setsalesByCategory((prevData) => ({
+                //     series: res.data.payments,
+                //     options: {
+                //         chart: {
+                //             type: 'donut',
+                //             height: 460,
+                //             fontFamily: 'Nunito, sans-serif',
+                //         },
+                //         dataLabels: {
+                //             enabled: false,
+                //         },
+                //         stroke: {
+                //             show: true,
+                //             width: 25,
+                //             colors: isDark ? '#0e1726' : '#fff',
+                //         },
+                //         colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f', '#5c1ac3', '#e7515a'],
+                //         legend: {
+                //             position: 'bottom',
+                //             horizontalAlign: 'center',
+                //             fontSize: '14px',
+                //             markers: {
+                //                 width: 10,
+                //                 height: 10,
+                //                 offsetX: -2,
+                //             },
+                //             height: 50,
+                //             offsetY: 20,
+                //         },
+                //         plotOptions: {
+                //             pie: {
+                //                 donut: {
+                //                     size: '65%',
+                //                     background: 'transparent',
+                //                     labels: {
+                //                         show: true,
+                //                         name: {
+                //                             show: true,
+                //                             fontSize: '29px',
+                //                             offsetY: -10,
+                //                         },
+                //                         value: {
+                //                             show: true,
+                //                             fontSize: '26px',
+                //                             color: isDark ? '#bfc9d4' : undefined,
+                //                             offsetY: 16,
+                //                             formatter: (val: any) => {
+                //                                 return val;
+                //                             },
+                //                         },
+                //                         total: {
+                //                             show: true,
+                //                             label: 'Total Amount',
+                //                             color: '#888ea8',
+                //                             fontSize: '29px',
+                //                             formatter: (w: any) => {
+                //                                 return res.data.payments_sum;
+                //                             },
+                //                         },
+                //                     },
+                //                 },
+                //             },
+                //         },
+                //         labels: ['Total Amount', 'Paid Amount', 'Unpaid Amount'],
+                //         states: {
+                //             hover: {
+                //                 filter: {
+                //                     type: 'none',
+                //                     value: 0.15,
+                //                 },
+                //             },
+                //             active: {
+                //                 filter: {
+                //                     type: 'none',
+                //                     value: 0.15,
+                //                 },
+                //             },
+                //         },
+                //     },
+                // }));
+                
 
                 setcategoryChart(() => ({
                     series: [
@@ -1175,7 +1215,7 @@ const Expense = () => {
                                     </div>
                                     <div className="xl:col-span-2">
                                         <div className="relative">
-                                            <div className="rounded-lg bg-white dark:bg-black">
+                                            {/* <div className="rounded-lg bg-white dark:bg-black">
                                                 {state.isMounted  && expenseChart.series?.length>0? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
@@ -1183,7 +1223,7 @@ const Expense = () => {
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
                                                 )}
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
@@ -1194,7 +1234,7 @@ const Expense = () => {
                                             <h5 className="text-lg font-semibold dark:text-white-light">{state.currentMonth} Expense</h5>
                                         </div>
                                         <div>
-                                            <div className="rounded-lg bg-white dark:bg-black">
+                                            {/* <div className="rounded-lg bg-white dark:bg-black">
                                                 {state.isMounted && categoryChart.series?.length>0 ? (
                                                     <ReactApexChart options={categoryChart.options} series={categoryChart.series} type="bar" height={360} width={'100%'} />
                                                 ) : (
@@ -1202,7 +1242,7 @@ const Expense = () => {
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
                                                 )}
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
