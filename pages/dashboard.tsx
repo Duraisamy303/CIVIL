@@ -1083,7 +1083,8 @@ const Expense = () => {
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted ? (
+                                            {state.isMounted && revenueChart.series ? (
+
                                                     <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
