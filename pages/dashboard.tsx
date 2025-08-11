@@ -1083,9 +1083,14 @@ const Expense = () => {
                                     <div className=" h-full xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                            {state.isMounted && revenueChart.series ? (
-
-                                                    <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
+                                                {state.isMounted && revenueChart.series ? (
+                                                    <ReactApexChart
+                                                        series={Array.isArray(revenueChart.series) ? revenueChart.series : [revenueChart.series]}
+                                                        options={revenueChart.options}
+                                                        type="area"
+                                                        height={325}
+                                                        width="100%"
+                                                    />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
@@ -1175,7 +1180,7 @@ const Expense = () => {
                                     <div className="xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted ? (
+                                                {state.isMounted && expenseChart.series ? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
