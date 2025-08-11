@@ -661,9 +661,10 @@ const Expense = () => {
                 setexpenseMonthWise(res.data.expense_amount_list);
                 setpayments_sum(res.data.payments_sum);
                 setSalesByCategory({
-                   series: donutSeries,
+                   series: res.data.payments,
                    options: donutOptions,
                 })
+                console.log('✌️res.data.payments --->', res.data.payments);
 
                 // setsalesByCategory((prevData) => ({
                 //     series: res.data.payments,
@@ -1215,7 +1216,7 @@ const Expense = () => {
                                     </div>
                                     <div className="xl:col-span-2">
                                         <div className="relative">
-                                            {/* <div className="rounded-lg bg-white dark:bg-black">
+                                            <div className="rounded-lg bg-white dark:bg-black">
                                                 {state.isMounted  && expenseChart.series?.length>0? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
@@ -1223,7 +1224,7 @@ const Expense = () => {
                                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
                                                     </div>
                                                 )}
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
