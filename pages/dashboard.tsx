@@ -12,42 +12,38 @@ import Models from '@/imports/models.import';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 });
-import { ApexOptions } from "apexcharts";
-type DonutChartSeries = number[];
+import { ApexOptions } from 'apexcharts';
 
 interface SalesByCategoryChart {
     series: number[];
     options: ApexOptions;
-  }
+}
 
 const Expense = () => {
     const donutSeries: number[] = [44, 55, 13, 43, 22];
 
     const donutOptions: ApexOptions = {
         chart: {
-          type: 'donut',
+            type: 'donut',
         },
         labels: ['Electronics', 'Clothing', 'Grocery', 'Home Decor', 'Books'],
         legend: {
-          position: 'bottom',
+            position: 'bottom',
         },
         responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 300,
-              },
-              legend: {
-                position: 'bottom',
-              },
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300,
+                    },
+                    legend: {
+                        position: 'bottom',
+                    },
+                },
             },
-          },
         ],
-      };
-
-   
-      
+    };
 
     const router = useRouter();
     const [state, setState] = useSetState({
@@ -60,6 +56,7 @@ const Expense = () => {
         admin: 'false',
         isMounted: false,
         revenueChart: {},
+        monthPaymentChart:{}
     });
 
     const [invoiceMonthData, setInvoiceMonthData] = useState([]);
@@ -332,7 +329,7 @@ const Expense = () => {
     const [salesByCategory, setSalesByCategory] = useState<SalesByCategoryChart>({
         series: [],
         options: donutOptions,
-      });
+    });
 
     const [categoryinitdata] = [
         {
@@ -625,10 +622,89 @@ const Expense = () => {
                 },
             ];
 
+            const paymentCharts: ApexOptions = {
+                chart: {
+                    type: 'donut',
+                    height: 460,
+                    fontFamily: 'Nunito, sans-serif',
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 25,
+                },
+                colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f', '#5c1ac3', '#e7515a'],
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '14px',
+                    markers: {
+                        offsetX: -2,
+                    },
+                    height: 50,
+                    offsetY: 20,
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            background: 'transparent',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '29px',
+                                    offsetY: -10,
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '26px',
+                                    color: isDark ? '#bfc9d4' : undefined,
+                                    offsetY: 16,
+                                    formatter: (val: any) => {
+                                        return val;
+                                    },
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total Amount',
+                                    color: '#888ea8',
+                                    fontSize: '29px',
+                                    formatter: (w: any) => {
+                                        return res.payments_sum;
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                labels: ['Total Amount', 'Paid Amount', 'Unpaid Amount'],
+                states: {
+                    hover: {
+                        filter: {
+                            type: 'none',
+                        },
+                    },
+                    active: {
+                        filter: {
+                            type: 'none',
+                        },
+                    },
+                },
+            };
+
             const pendingPayment = {
                 total: roundNumber(res?.pending_payment),
                 monthData: roundNumber(res?.pending_payment_this_month),
             };
+
+            const monthPaymentChart = {
+                series: res.payments,
+                options: paymentCharts,
+            };
+
             setState({
                 cardData,
                 pendingPayment,
@@ -640,6 +716,7 @@ const Expense = () => {
                     series: revenueSeries,
                     options: revenueOptions,
                 },
+                monthPaymentChart
             });
         } catch (error) {
             console.log('✌️error --->', error);
@@ -653,6 +730,7 @@ const Expense = () => {
                 },
             })
             .then((res) => {
+             
                 setMonthName(res.data.months_name);
                 setTotal(res.data.total_amount);
                 setPaid(res.data.paid_amount);
@@ -661,9 +739,9 @@ const Expense = () => {
                 setexpenseMonthWise(res.data.expense_amount_list);
                 setpayments_sum(res.data.payments_sum);
                 setSalesByCategory({
-                   series: res.data.payments,
-                   options: donutOptions,
-                })
+                    series: res.data.payments,
+                    options: donutOptions,
+                });
                 console.log('✌️res.data.payments --->', res.data.payments);
 
                 // setsalesByCategory((prevData) => ({
@@ -746,7 +824,6 @@ const Expense = () => {
                 //         },
                 //     },
                 // }));
-                
 
                 setcategoryChart(() => ({
                     series: [
@@ -1145,13 +1222,13 @@ const Expense = () => {
                                         </div>
                                         <div>
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted && salesByCategory.series?.length > 0 ? (
+                                                {state.isMounted && state.monthPaymentChart.series?.length > 0 ? (
                                                     // <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={325} width={'100%'} />
 
                                                     <ReactApexChart
                                                         key={state.isMounted ? 'mounted' : 'unmounted'}
-                                                        series={salesByCategory?.series || []}
-                                                        options={salesByCategory?.options || []}
+                                                        series={state.monthPaymentChart?.series || []}
+                                                        options={state.monthPaymentChart?.options || []}
                                                         type="donut"
                                                         height={460}
                                                         width={'100%'}
@@ -1217,7 +1294,7 @@ const Expense = () => {
                                     <div className="xl:col-span-2">
                                         <div className="relative">
                                             <div className="rounded-lg bg-white dark:bg-black">
-                                                {state.isMounted  && expenseChart.series?.length>0? (
+                                                {state.isMounted && expenseChart.series?.length > 0 ? (
                                                     <ReactApexChart series={expenseChart.series} options={expenseChart.options} type="area" height={325} width={'100%'} />
                                                 ) : (
                                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
