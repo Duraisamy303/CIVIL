@@ -5,11 +5,13 @@ import IconEye from '@/components/Icon/IconEye';
 import Link from 'next/link';
 import { IRootState } from '../store';
 import dynamic from 'next/dynamic';
-const ReactApexChart = dynamic(() => import('react-apexcharts').then((mod) => mod.default), { ssr: false });
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import { baseUrl, roundNumber, useSetState } from '@/utils/function.util';
 import Models from '@/imports/models.import';
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+    ssr: false,
+});
 
 const Expense = () => {
     const router = useRouter();
